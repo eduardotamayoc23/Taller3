@@ -12,6 +12,8 @@
         <link rel="stylesheet" href="css/MarkerCluster.Default.css">
         <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
         <link rel="stylesheet" href="css/leaflet-measure.css">
+        <link rel="stylesheet" href="style.css">
+        
         <style>
         html, body, #map {
             width: 100%;
@@ -26,6 +28,10 @@
 
         
         <div id="map">
+            
+            <img id="norte" src="norte.png" class="norte" style="z-index:9999"></img>
+			
+			
         </div>
         <script src="js/qgis2web_expressions.js"></script>
         <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
@@ -47,6 +53,13 @@
         <script src="data/sitios_interes_6.js"></script>
         <script src="betterscale/L.Control.BetterScale.js"></script>
 	    <link rel="stylesheet" href="betterscale/L.Control.BetterScale.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.4.0/easy-button.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.4.0/easy-button.js"></script>
+        <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.draw/src/leaflet.draw.css"/>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.2/leaflet.draw.js"></script>
+        <script src="spin/spin.min.js" charset="utf-8"></script>
+	    <script src="spin/leaflet.spin.min.js" charset="utf-8"></script>
+        
         <script>
         var highlightLayer;
         function highlightFeature(e) {
@@ -91,7 +104,7 @@
         map.createPane('pane_OSMStandard_0');
         map.getPane('pane_OSMStandard_0').style.zIndex = 400;
         var layer_OSMStandard_0 = L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            pane: 'pane_OSMStandard_0',
+            //pane: 'pane_OSMStandard_0',
             opacity: 1.0,
             attribution: '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
             minZoom: 1,
@@ -340,7 +353,7 @@
             style: style_Jerarquizacion_vial_4_0,
         });
         bounds_group.addLayer(layer_Jerarquizacion_vial_4);
-        map.addLayer(layer_Jerarquizacion_vial_4);
+        //map.addLayer(layer_Jerarquizacion_vial_4);
         function pop_rios_5(feature, layer) {
             layer.on({
                 mouseout: function(e) {
@@ -510,12 +523,125 @@
         document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
         .title += 'Search for a place';
         var baseMaps = {};
-        L.control.layers(baseMaps,{'<img src="legend/sitios_interes_6.png" /> sitios_interes': cluster_sitios_interes_6,'<img src="legend/rios_5.png" /> rios': layer_rios_5,'<img src="legend/Jerarquizacion_vial_4.png" /> Jerarquizacion_vial': layer_Jerarquizacion_vial_4,'<img src="legend/corregimientos_3.png" /> corregimientos': layer_corregimientos_3,'<img src="legend/comunas_2.png" /> comunas': layer_comunas_2,'<img src="legend/barrios_1.png" /> barrios': layer_barrios_1,"OSM Standard": layer_OSMStandard_0,}).addTo(map);
+        L.control.layers(baseMaps,{'<img src="legend/sitios_interes_6.png" /> sitios_interes': cluster_sitios_interes_6,
+        '<img src="legend/rios_5.png" /> rios': layer_rios_5,
+        '<img src="legend/Jerarquizacion_vial_4.png" /> Jerarquizacion_vial': layer_Jerarquizacion_vial_4,
+        '<img src="legend/corregimientos_3.png" /> corregimientos': layer_corregimientos_3,
+        '<img src="legend/comunas_2.png" /> comunas': layer_comunas_2,
+        //'<img src="legend/corregimientos_3.png" /> Estadio Deportivo Cali': circle,
+        '<img src="legend/barrios_1.png" /> barrios': layer_barrios_1,
+        "OSM Standard": layer_OSMStandard_0,}).addTo(map);
         setBounds();
 
         //añadir escala
         L.control.scale({position: 'bottomleft'}).addTo(map);
         L.control.betterscale({position:'bottomright'}).addTo(map);
+
+        var popup = L.popup();
+
+        function onMapClick(e) {
+                popup
+                    .setLatLng(e.latlng)
+                    .setContent(' <table>\
+                    <tr>\
+                        <th scope="row">LONGITUD    </th>\
+                        <td>' + e.latlng.lng + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LATITUD    </th>\
+                        <td>'+ e.latlng.lat + '</td>\
+                    </tr>\
+                </table> </center>'
+                    )
+                    .openOn(map);
+            }
+
+            map.on('click', onMapClick);
+
+            //circulo 
+            var circle = L.circle([3.522459936324753, -76.41708823622459], {
+    color: 'green',
+    fillColor: 'green',
+    fillOpacity: 0.5,
+    radius: 500
+}).addTo(map);
+circle.bindPopup("<center>ESTADIO DEPORTIVO CALI</center>"+"<center>El Estadio Deportivo Cali es un estadio de fútbol en propiedad del equipo Deportivo Cali. Es el escenario deportivo con mayor capacidad en Colombia. Se encuentra ubicado en el área metropolitana de Cali, en la zona rural de Palmira, en el km 8 de la recta intermunicipal entre ambos municipios.</center>");
+        //idesc
+        //cargar capas de la idesc de cualquier tematica
+        var AreasProtegidas= L.tileLayer.wms('http://ws-idesc.cali.gov.co/geoserver/pot_2014/wms?service=WMS&version=1.1.0',
+		{
+		layers: 'amb_eep_areas_protegidas',
+		format: 'image/png',
+        transparent: true,
+        opacity: 1,
+        zIndex: 9999
+		});
+		map.addLayer(AreasProtegidas );
+        leyenda.addOverlay(AreasProtegidas, 'AreasProtegidas');
+
+        var CurvasdeNivel = L.tileLayer.wms('http://ws-idesc.cali.gov.co/geoserver/pot_2014/wms?service=WMS&version=1.1.0',
+		{
+		layers: 'amb_eep_curvas_proteccion_cimas',
+		format: 'image/png',
+        transparent: true,
+        zIndex: 9999
+		});
+		map.addLayer(CurvasdeNivel );
+        leyenda.addOverlay(CurvasdeNivel, 'CurvasdeNivel');
+// boton para reiniciar 
+    L.easyButton('<img src="iconos/restart.png"  align="absmiddle" height="16px" >', function() 
+		{
+		alert('La pagina se reiniciará');
+		location.reload();
+
+	  	}).addTo(map);
+
+          var drawnItems = new L.FeatureGroup();
+        var drawControl = new L.Control.Draw({
+				position: 'topleft',
+				edit: {
+					featureGroup: drawnItems,
+					remove: true,
+					edit: false,
+				},
+				draw: {
+					circlemarker: true,
+					circle:true,
+					rectangle:false,
+					marker:false,
+				}
+			});
+			map.addControl(drawControl);
+			
+	map.on(L.Draw.Event.CREATED, function (e) {
+			    var type = e.layerType,
+			        layer = e.layer;
+
+			    if (type === 'marker') {
+			        layer.bindPopup('A popup!');
+			    }
+
+			    drawnItems.addLayer(layer);
+				map.addLayer(drawnItems);
+			});
+
+	
+	map.spin(false);
+
+	var printer = L.easyPrint({
+      		tileLayer: mapabase,
+      		sizeModes: ['Current', 'A4Landscape', 'A4Portrait'],
+      		filename: 'myMap',
+      		exportOnly: true,
+      		hideControlContainer: true
+		}).addTo(map);
+
+		function manualPrint () {
+			printer.printMap('CurrentSize', 'MyManualPrint')
+		}
+
+
+
         </script>
     </body>
 </html>
