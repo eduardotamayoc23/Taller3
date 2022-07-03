@@ -22,9 +22,9 @@
         </div>
         <div class="row">
             <div class="col">
-            <h1>¿Dónde hospedarte en el corregimiento de Felidia?</h1>
-            <p> Felidia es un corregimiento en el occidente de la ciudad de Cali. Limita al oriente con el corregimietno El Saladito, al norte con el municipio de Dagua, al sur con el corregimiento de La Leonera, y al occidente con el municipio de Buenaventura. La zona de este corregimiento empieza a ser poblada en el siglo XIX, en 1960 se comienza un incemento en la población, la formación de fincas y zonas de recreación. Para ingresar al corregimiento existen dos vías de comunicación: La primera es por la vía al mar y la segunda vía, es por la circunvalación pasando por el acueducto de San Antononio. El municipio cuenta con gran variedad de flora y fauna. Los lugares caracgtericos de mayor atracción son: Río Felidia, El Mirador, Sendero Ecológico Los Cedrillos, Mirador José Neval, Parque Nacional Natural Farallones, Inversiones Tierra Fértil, Finca Etamayo, Campamento Betania, Finca Santa Helena, Finca San Marcos, Finca La Milonga, Santa María del Silencio, Finca la Golita, Villa Cecci, Finca Altamira, San Rafael y Museo del Carajo. </p>
-            <a href ="geovisor1.html">
+            <h1>Taller 3 - SIG WEB</h1>
+            <p> EXPLORANDO LEAFLET PARA CREAR APLICAACIONES WEB - MOVIL  </p>
+            <a href ="index_geovisor.html">
                 <button type="button">IR AL GEOVISOR</button>
 
             </a>
