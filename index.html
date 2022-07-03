@@ -43,6 +43,8 @@
         <script src="data/Jerarquizacion_vial_4.js"></script>
         <script src="data/rios_5.js"></script>
         <script src="data/sitios_interes_6.js"></script>
+        <script src="betterscale/L.Control.BetterScale.js"></script>
+	    <link rel="stylesheet" href="betterscale/L.Control.BetterScale.css" />
         <script>
         var highlightLayer;
         function highlightFeature(e) {
@@ -508,6 +510,10 @@
         var baseMaps = {};
         L.control.layers(baseMaps,{'<img src="legend/sitios_interes_6.png" /> sitios_interes': cluster_sitios_interes_6,'<img src="legend/rios_5.png" /> rios': layer_rios_5,'<img src="legend/Jerarquizacion_vial_4.png" /> Jerarquizacion_vial': layer_Jerarquizacion_vial_4,'<img src="legend/corregimientos_3.png" /> corregimientos': layer_corregimientos_3,'<img src="legend/comunas_2.png" /> comunas': layer_comunas_2,'<img src="legend/barrios_1.png" /> barrios': layer_barrios_1,"OSM Standard": layer_OSMStandard_0,}).addTo(map);
         setBounds();
+
+        //añadir escala
+        L.control.scale({position: 'bottomleft'}).addTo(map);
+        L.control.betterscale({position:'bottomright'}).addTo(map);
         </script>
     </body>
 </html>
