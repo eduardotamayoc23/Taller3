@@ -24,7 +24,7 @@
             <div class="col">
             <h1>Taller 3 - SIG WEB</h1>
             <p> EXPLORANDO LEAFLET PARA CREAR APLICAACIONES WEB - MOVIL  </p>
-            <a href ="index_inicio.html">
+            <a href ="index.html">
                 <button type="button">IR AL GEOVISOR</button>
 
             </a>
