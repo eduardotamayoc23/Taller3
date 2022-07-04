@@ -59,6 +59,10 @@
 	    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.2/leaflet.draw.js"></script>
         <script src="spin/spin.min.js" charset="utf-8"></script>
 	    <script src="spin/leaflet.spin.min.js" charset="utf-8"></script>
+        <script src="graticule/Leaflet.Graticule.js"></script>
+        <link rel="stylesheet" href="minimap/Control.MiniMap.css" />
+	    <script src="minimap/Control.MiniMap.js" type="text/javascript"></script>
+        
         
         <script>
         var highlightLayer;
@@ -518,6 +522,90 @@
             text: 'Search',
             title: 'Testing'
         }).addTo(map);
+            //circulo 
+            var circle = L.circle([3.522459936324753, -76.41708823622459], {
+        color: 'green',
+        fillColor: 'green',
+        fillOpacity: 0.5,
+        radius: 500
+    }).addTo(map);
+    
+        
+    L.latlngGraticule({
+			showLabel: true,
+			opacity:0.5,
+            weight: 0.5,
+			color: 'black',
+			zoomInterval: [
+				{start: 13, end: 18, interval: 0.05}
+			]
+		}).addTo(map);
+        //añadir mapa base 
+        var mapabase2 = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', 
+            {
+                maxZoom: 18,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' 
+            });
+	
+
+        
+        //idesc
+        //cargar capas de la idesc de cualquier tematica
+        var AreasProtegidas= L.tileLayer.wms('http://ws-idesc.cali.gov.co/geoserver/pot_2014/wms?service=WMS&version=1.1.0',
+		{
+		layers: 'amb_eep_areas_protegidas',
+		format: 'image/png',
+        transparent: true,
+        opacity: 1,
+        zIndex: 9999
+		});
+		map.addLayer(AreasProtegidas );
+        //leyenda.addOverlay(AreasProtegidas, 'AreasProtegidas');
+
+        var CurvasdeNivel = L.tileLayer.wms('http://ws-idesc.cali.gov.co/geoserver/pot_2014/wms?service=WMS&version=1.1.0',
+		{
+		layers: 'amb_eep_curvas_proteccion_cimas',
+		format: 'image/png',
+        transparent: true,
+        zIndex: 9999
+		});
+		map.addLayer(CurvasdeNivel );
+        //leyenda.addOverlay(CurvasdeNivel, 'CurvasdeNivel');
+
+        var Ecoparques= L.tileLayer.wms('http://ws-idesc.cali.gov.co:8081/geoserver/wms?service=WMS&version=1.1.0',
+		{
+		layers: 'amb_eep_aeie_ecoparques',
+		format: 'image/png',
+        transparent: true,
+        opacity: 0.5
+		});
+		map.addLayer(Ecoparques );
+
+        var Humedales= L.tileLayer.wms('http://ws-idesc.cali.gov.co/geoserver/pot_2014/wms?service=WMS&version=1.1.0',
+		{
+		layers: 'bcs_hid_humedales',
+		format: 'image/png',
+        transparent: true,
+		});
+		map.addLayer(Humedales );
+
+        var EqServiciosRuralesBasicos= L.tileLayer.wms('http://ws-idesc.cali.gov.co/geoserver/pot_2014/wms?service=WMS&version=1.1.0',
+		{
+		layers: 'eqp_equipamiento_rural_servicio_basico',
+		format: 'image/png',
+        transparent: true,
+		});
+		map.addLayer(EqServiciosRuralesBasicos );
+
+        var ColinasyCerros= L.tileLayer.wms('http://ws-idesc.cali.gov.co/geoserver/pot_2014/wms?service=WMS&version=1.1.0',
+		{
+		layers: 'amb_eep_aeie_alturas_colinas_cerros',
+		format: 'image/png',
+        transparent: true,
+		});
+		map.addLayer(ColinasyCerros );
+
+
         document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
         .className += ' fa fa-search';
         document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
@@ -530,7 +618,15 @@
         '<img src="legend/comunas_2.png" /> comunas': layer_comunas_2,
         //'<img src="legend/corregimientos_3.png" /> Estadio Deportivo Cali': circle,
         '<img src="legend/barrios_1.png" /> barrios': layer_barrios_1,
-        "OSM Standard": layer_OSMStandard_0,}).addTo(map);
+        "OSM Standard": layer_OSMStandard_0,
+        "Estadio Deportivo Cali":circle,
+        "Áreas protegidas":AreasProtegidas,
+        "Curvas de Nivel":CurvasdeNivel,
+        "Ecoparques":Ecoparques,
+        "Humedales":Humedales,
+        "Equipamiento de Servicios Rurales Básicos":EqServiciosRuralesBasicos,
+        "Colinas y Cerros":ColinasyCerros,
+        "Mapa Base 2":mapabase2,}).addTo(map);
         setBounds();
 
         //añadir escala
@@ -558,36 +654,9 @@
 
             map.on('click', onMapClick);
 
-            //circulo 
-            var circle = L.circle([3.522459936324753, -76.41708823622459], {
-    color: 'green',
-    fillColor: 'green',
-    fillOpacity: 0.5,
-    radius: 500
-}).addTo(map);
+            
 circle.bindPopup("<center>ESTADIO DEPORTIVO CALI</center>"+"<center>El Estadio Deportivo Cali es un estadio de fútbol en propiedad del equipo Deportivo Cali. Es el escenario deportivo con mayor capacidad en Colombia. Se encuentra ubicado en el área metropolitana de Cali, en la zona rural de Palmira, en el km 8 de la recta intermunicipal entre ambos municipios.</center>");
-        //idesc
-        //cargar capas de la idesc de cualquier tematica
-        var AreasProtegidas= L.tileLayer.wms('http://ws-idesc.cali.gov.co/geoserver/pot_2014/wms?service=WMS&version=1.1.0',
-		{
-		layers: 'amb_eep_areas_protegidas',
-		format: 'image/png',
-        transparent: true,
-        opacity: 1,
-        zIndex: 9999
-		});
-		map.addLayer(AreasProtegidas );
-        leyenda.addOverlay(AreasProtegidas, 'AreasProtegidas');
-
-        var CurvasdeNivel = L.tileLayer.wms('http://ws-idesc.cali.gov.co/geoserver/pot_2014/wms?service=WMS&version=1.1.0',
-		{
-		layers: 'amb_eep_curvas_proteccion_cimas',
-		format: 'image/png',
-        transparent: true,
-        zIndex: 9999
-		});
-		map.addLayer(CurvasdeNivel );
-        leyenda.addOverlay(CurvasdeNivel, 'CurvasdeNivel');
+        
 // boton para reiniciar 
     L.easyButton('<img src="iconos/restart.png"  align="absmiddle" height="16px" >', function() 
 		{
@@ -595,6 +664,25 @@ circle.bindPopup("<center>ESTADIO DEPORTIVO CALI</center>"+"<center>El Estadio D
 		location.reload();
 
 	  	}).addTo(map);
+        
+
+        //añadir cuadricula de coordenadas
+        L.latlngGraticule({
+			showLabel: true,
+			opacity:0.5,
+            weight: 0.5,
+			color: 'black',
+			zoomInterval: [
+				{start: 1, end: 28, interval: 0.25}
+			]
+		}).addTo(map);
+        // Añadir minimapa
+
+    var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+	    var osmAttrib='Map data &copy; OpenStreetMap contributors';
+
+        var osm2 = new L.TileLayer(osmUrl, {minZoom: 0, maxZoom: 8, attribution: osmAttrib });
+		var miniMap2 = new L.Control.MiniMap(osm2, { toggleDisplay: true }).addTo(map);
 
           var drawnItems = new L.FeatureGroup();
         var drawControl = new L.Control.Draw({
